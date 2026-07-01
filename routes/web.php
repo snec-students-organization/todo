@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TaskController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DailyPlannerController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\GoalController;
@@ -40,8 +39,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tasks/export/pdf', [TaskController::class, 'exportPdf'])->name('tasks.export.pdf');
     Route::get('/tasks/export/excel', [TaskController::class, 'exportExcel'])->name('tasks.export.excel');
 
-    // ──────────────── Categories ────────────────
-    Route::resource('categories', CategoryController::class)->except(['show', 'create', 'edit']);
 
     // ──────────────── Daily Planner ────────────────
     Route::get('/planner', [DailyPlannerController::class, 'index'])->name('planner');

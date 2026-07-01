@@ -36,37 +36,6 @@
                 </div>
 
                 <div class="row g-3 mb-3">
-                    <!-- Category Selection -->
-                    <div class="col-md-6">
-                        <label for="category_id" class="form-label fw-semibold">Category</label>
-                        <select class="form-select @error('category_id') is-invalid @enderror" id="category_id" name="category_id">
-                            <option value="">-- No Category --</option>
-                            @foreach ($categories as $cat)
-                                <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>
-                                    {{ $cat->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('category_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- Priority Selection -->
-                    <div class="col-md-6">
-                        <label for="priority" class="form-label fw-semibold">Priority <span class="text-danger">*</span></label>
-                        <select class="form-select @error('priority') is-invalid @enderror" id="priority" name="priority" required>
-                            <option value="Low" {{ old('priority') == 'Low' ? 'selected' : '' }}>Low</option>
-                            <option value="Medium" {{ old('priority', 'Medium') == 'Medium' ? 'selected' : '' }}>Medium</option>
-                            <option value="High" {{ old('priority') == 'High' ? 'selected' : '' }}>High</option>
-                        </select>
-                        @error('priority')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="row g-3 mb-3">
                     <!-- Status Selection -->
                     <div class="col-md-6">
                         <label for="status" class="form-label fw-semibold">Initial Status <span class="text-danger">*</span></label>
@@ -85,11 +54,8 @@
                     <div class="col-md-6">
                         <label for="repeat_type" class="form-label fw-semibold">Recurrence Pattern <span class="text-danger">*</span></label>
                         <select class="form-select @error('repeat_type') is-invalid @enderror" id="repeat_type" name="repeat_type" required>
-                            <option value="None" {{ old('repeat_type', 'None') == 'None' ? 'selected' : '' }}>None</option>
-                            <option value="Daily" {{ old('repeat_type') == 'Daily' ? 'selected' : '' }}>Daily</option>
+                            <option value="Daily" {{ old('repeat_type', 'Daily') == 'Daily' ? 'selected' : '' }}>Daily</option>
                             <option value="Weekly" {{ old('repeat_type') == 'Weekly' ? 'selected' : '' }}>Weekly</option>
-                            <option value="Monthly" {{ old('repeat_type') == 'Monthly' ? 'selected' : '' }}>Monthly</option>
-                            <option value="Yearly" {{ old('repeat_type') == 'Yearly' ? 'selected' : '' }}>Yearly</option>
                         </select>
                         @error('repeat_type')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -97,33 +63,13 @@
                     </div>
                 </div>
 
-                <div class="row g-3 mb-4">
-                    <!-- Due Date -->
-                    <div class="col-md-4">
-                        <label for="due_date" class="form-label fw-semibold">Due Date</label>
-                        <input type="date" class="form-control @error('due_date') is-invalid @enderror" id="due_date" name="due_date" value="{{ old('due_date') }}">
-                        @error('due_date')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- Due Time -->
-                    <div class="col-md-4">
-                        <label for="due_time" class="form-label fw-semibold">Due Time</label>
-                        <input type="time" class="form-control @error('due_time') is-invalid @enderror" id="due_time" name="due_time" value="{{ old('due_time') }}">
-                        @error('due_time')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
+                <div class="mb-4">
                     <!-- Estimated Minutes -->
-                    <div class="col-md-4">
-                        <label for="estimated_minutes" class="form-label fw-semibold">Time Blocking (Minutes)</label>
-                        <input type="number" class="form-control @error('estimated_minutes') is-invalid @enderror" id="estimated_minutes" name="estimated_minutes" value="{{ old('estimated_minutes') }}" min="1" placeholder="e.g. 30, 90">
-                        @error('estimated_minutes')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <label for="estimated_minutes" class="form-label fw-semibold">Time Blocking (Minutes)</label>
+                    <input type="number" class="form-control @error('estimated_minutes') is-invalid @enderror" id="estimated_minutes" name="estimated_minutes" value="{{ old('estimated_minutes') }}" min="1" placeholder="e.g. 30, 90">
+                    @error('estimated_minutes')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">

@@ -353,9 +353,6 @@
     <a href="{{ route('notes.index') }}" class="sidebar-link {{ Route::is('notes.*') ? 'active' : '' }}">
         <span class="icon"><i class="fa-regular fa-note-sticky"></i></span> Notes
     </a>
-    <a href="{{ route('categories.index') }}" class="sidebar-link {{ Route::is('categories.*') ? 'active' : '' }}">
-        <span class="icon"><i class="fa-solid fa-tag"></i></span> Categories
-    </a>
 
     <div class="nav-section-label">Insights</div>
 

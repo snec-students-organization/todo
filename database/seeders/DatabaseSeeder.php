@@ -122,7 +122,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'Pending',
             'due_date' => Carbon::today()->subDays(3),
             'due_time' => '17:00:00',
-            'repeat_type' => 'None',
+            'repeat_type' => 'Weekly',
             'estimated_minutes' => 45,
         ]);
 
@@ -149,7 +149,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'Completed',
             'due_date' => Carbon::yesterday(),
             'due_time' => '18:30:00',
-            'repeat_type' => 'None',
+            'repeat_type' => 'Weekly',
             'estimated_minutes' => 20,
         ]);
 
@@ -162,7 +162,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'Completed',
             'due_date' => Carbon::today()->subDays(2),
             'due_time' => '14:00:00',
-            'repeat_type' => 'None',
+            'repeat_type' => 'Weekly',
             'estimated_minutes' => 60,
         ]);
 
@@ -176,7 +176,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'Pending',
             'due_date' => Carbon::today(),
             'due_time' => '06:00:00',
-            'repeat_type' => 'None',
+            'repeat_type' => 'Daily',
             'estimated_minutes' => 60,
         ]);
 
@@ -202,7 +202,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'In Progress',
             'due_date' => Carbon::today(),
             'due_time' => '10:00:00',
-            'repeat_type' => 'None',
+            'repeat_type' => 'Daily',
             'estimated_minutes' => 90,
         ]);
 
@@ -215,7 +215,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'Pending',
             'due_date' => Carbon::today(),
             'due_time' => '14:00:00',
-            'repeat_type' => 'None',
+            'repeat_type' => 'Daily',
             'estimated_minutes' => 180,
         ]);
 
@@ -242,7 +242,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'Pending',
             'due_date' => Carbon::today()->addDay(),
             'due_time' => '10:30:00',
-            'repeat_type' => 'None',
+            'repeat_type' => 'Weekly',
             'estimated_minutes' => 60,
         ]);
 

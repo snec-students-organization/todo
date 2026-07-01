@@ -59,34 +59,35 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category_id' => 'nullable|exists:categories,id',
-            'priority' => 'required|in:High,Medium,Low',
-            'status' => 'required|in:Pending,In Progress,Completed,Cancelled',
-            'due_date' => 'nullable|date',
-            'due_time' => 'nullable|date_format:H:i',
-            'repeat_type' => 'required|in:None,Daily,Weekly,Monthly,Yearly',
+            'title'             => 'required|string|max:255',
+            'description'       => 'nullable|string',
+            'status'            => 'required|in:Pending,In Progress,Completed,Cancelled',
+            'repeat_type'       => 'required|in:Daily,Weekly',
             'estimated_minutes' => 'nullable|integer|min:1',
         ]);
 
         $user = $request->user();
 
+        // Auto-calculate due_date based on recurrence
+        $dueDate = $request->repeat_type === 'Weekly'
+            ? Carbon::today()->addWeek()
+            : Carbon::today();
+
         $task = Task::create([
-            'user_id' => $user->id,
-            'title' => $request->title,
-            'description' => $request->description,
-            'category_id' => $request->category_id,
-            'priority' => $request->priority,
-            'status' => $request->status,
-            'due_date' => $request->due_date,
-            'due_time' => $request->due_time,
-            'repeat_type' => $request->repeat_type,
+            'user_id'           => $user->id,
+            'title'             => $request->title,
+            'description'       => $request->description,
+            'category_id'       => null,
+            'priority'          => 'Medium',
+            'status'            => $request->status,
+            'due_date'          => $dueDate,
+            'due_time'          => null,
+            'repeat_type'       => $request->repeat_type,
             'estimated_minutes' => $request->estimated_minutes,
         ]);
 
         // Log the activity
-        ActivityLog::log($user->id, "Created Task: {$task->title}", "Priority: {$task->priority}");
+        ActivityLog::log($user->id, "Created Task: {$task->title}", "Recurrence: {$task->repeat_type}");
 
         // If stored as completed directly, check gamification streak
         if ($task->status === 'Completed') {
@@ -130,34 +131,36 @@ class TaskController extends Controller
         $user = $request->user();
 
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category_id' => 'nullable|exists:categories,id',
-            'priority' => 'required|in:High,Medium,Low',
-            'status' => 'required|in:Pending,In Progress,Completed,Cancelled',
-            'due_date' => 'nullable|date',
-            'due_time' => 'nullable', // Flexible validation for time
-            'repeat_type' => 'required|in:None,Daily,Weekly,Monthly,Yearly',
+            'title'             => 'required|string|max:255',
+            'description'       => 'nullable|string',
+            'status'            => 'required|in:Pending,In Progress,Completed,Cancelled',
+            'repeat_type'       => 'required|in:Daily,Weekly',
             'estimated_minutes' => 'nullable|integer|min:1',
         ]);
 
         $oldStatus = $task->status;
 
-        // Clean time format if it has seconds
-        $timeInput = $request->due_time;
-        if ($timeInput && strlen($timeInput) > 5) {
-            $timeInput = substr($timeInput, 0, 5);
+        // Recalculate due_date if repeat_type changed or due_date is in the past
+        $dueDate = $task->due_date;
+        if (!$dueDate || $dueDate->isPast()) {
+            $dueDate = $request->repeat_type === 'Weekly'
+                ? Carbon::today()->addWeek()
+                : Carbon::today();
+        } elseif ($task->repeat_type !== $request->repeat_type) {
+            $dueDate = $request->repeat_type === 'Weekly'
+                ? Carbon::today()->addWeek()
+                : Carbon::today();
         }
 
         $task->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'category_id' => $request->category_id,
-            'priority' => $request->priority,
-            'status' => $request->status,
-            'due_date' => $request->due_date,
-            'due_time' => $timeInput,
-            'repeat_type' => $request->repeat_type,
+            'title'             => $request->title,
+            'description'       => $request->description,
+            'category_id'       => $task->category_id,
+            'priority'          => $task->priority ?? 'Medium',
+            'status'            => $request->status,
+            'due_date'          => $dueDate,
+            'due_time'          => $task->due_time,
+            'repeat_type'       => $request->repeat_type,
             'estimated_minutes' => $request->estimated_minutes,
         ]);
 

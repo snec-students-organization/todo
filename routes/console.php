@@ -10,3 +10,5 @@ Artisan::command('inspire', function () {
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('tasks:send-reminders')->everyMinute();
+
+Schedule::command('tasks:refresh-recurring')->daily();
